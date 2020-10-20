@@ -14,8 +14,15 @@ public class Monifor : Window {
 	private string monitor_resolution;
 		
     public Monifor() {
-		monitor_name = GetCommandOutput("sh scripts/monitor_name.sh");
-		monitor_resolution = GetCommandOutput("sh scripts/monitor_resolution.sh");
+		if(IsExist("/bin/fla") == true) {
+			print("Script: FlaScript\n");
+			monitor_name = GetCommandOutput("fla --b scripts/monitor_name.fls");
+			monitor_resolution = GetCommandOutput("fla --b scripts/monitor_resolution.fls");		
+		} else {
+			print("Script: Shell Script\n");
+			monitor_name = GetCommandOutput("sh scripts/monitor_name.sh");
+			monitor_resolution = GetCommandOutput("sh scripts/monitor_resolution.sh");
+		}
 		
         this.title = monitor_name + " " + monitor_resolution;
         
@@ -52,6 +59,14 @@ public class Monifor : Window {
 		}
 		
 		return output;
+    }
+
+    public bool IsExist(string _directory) {
+    	if (GLib.FileUtils.test(_directory, GLib.FileTest.EXISTS)) {
+			return true;
+		}
+		
+		return false;
     }
 
     public static int main (string[] args) {
