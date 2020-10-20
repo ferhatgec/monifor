@@ -1,9 +1,11 @@
 #!/bin/sh
 
-mkdir $HOME/.local/monifor/
+mkdir $HOME/.local/share/monifor
 
-cp scripts/*.sh $HOME/.local/monifor
+cp scripts/*.fls $HOME/.local/share/monifor/
 
-sudo valac --pkg gtk+-3.0 Monifor.vala -o /bin/monifor
+cp scripts/*.sh $HOME/.local/share/monifor/
+
+sudo valac --pkg gtk+-3.0 --pkg posix Monifor.vala -o /bin/monifor
 
 monifor

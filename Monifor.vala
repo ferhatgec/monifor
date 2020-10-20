@@ -16,12 +16,26 @@ public class Monifor : Window {
     public Monifor() {
 		if(IsExist("/bin/fla") == true) {
 			print("Script: FlaScript\n");
-			monitor_name = GetCommandOutput("fla --b scripts/monitor_name.fls");
-			monitor_resolution = GetCommandOutput("fla --b scripts/monitor_resolution.fls");		
+			
+			if(IsExist("/bin/monifor") == true) {
+				Posix.chdir("/");
+				monitor_name = GetCommandOutput("fla --b " + GLib.Environment.get_home_dir() + "/.local/share/monifor/monitor_name.fls");
+				monitor_resolution = GetCommandOutput("fla --b " + GLib.Environment.get_home_dir() + "/.local/share/monifor/monitor_resolution.fls");			
+			} else {
+				monitor_name = GetCommandOutput("fla --b scripts/monitor_name.fls");
+				monitor_resolution = GetCommandOutput("fla --b scripts/monitor_resolution.fls");
+			}				
 		} else {
 			print("Script: Shell Script\n");
-			monitor_name = GetCommandOutput("sh scripts/monitor_name.sh");
-			monitor_resolution = GetCommandOutput("sh scripts/monitor_resolution.sh");
+				
+			if(IsExist("/bin/monifor") == true) {
+				Posix.chdir("/");
+				monitor_name = GetCommandOutput("sh " + GLib.Environment.get_home_dir() + "/.local/share/monifor/monitor_name.sh");
+				monitor_resolution = GetCommandOutput("sh " + GLib.Environment.get_home_dir() + "/.local/share/monifor/monitor_resolution.sh");			
+			} else {
+				monitor_name = GetCommandOutput("sh scripts/monitor_name.sh");
+				monitor_resolution = GetCommandOutput("sh scripts/monitor_resolution.sh");
+			}
 		}
 		
         this.title = monitor_name + " " + monitor_resolution;
