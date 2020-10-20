@@ -9,18 +9,20 @@ using Gtk;
 
 public class Monifor : Window {
     private Scale brightness;
-	private string monitor_name;
-	
-    public Monifor() {
-    	
-		monitor_name = GetCommandOutput("sh monitor_name.sh");
 
+	private string monitor_name;
+	private string monitor_resolution;
 		
-        this.title = monitor_name;
+    public Monifor() {
+		monitor_name = GetCommandOutput("sh scripts/monitor_name.sh");
+		monitor_resolution = GetCommandOutput("sh scripts/monitor_resolution.sh");
+		
+        this.title = monitor_name + " " + monitor_resolution;
+        
         this.window_position = WindowPosition.CENTER;
         this.destroy.connect(Gtk.main_quit);
         
-        set_default_size(300, 20);
+        set_default_size(300, 40);
 		
         brightness = new Scale.with_range(Orientation.HORIZONTAL, 0, 100, 1);
 		
@@ -42,9 +44,9 @@ public class Monifor : Window {
     	
     	try {
 			Process.spawn_command_line_sync (command,
-									out output,
-									out error,
-									out exit_status);
+							out output,
+							out error,
+							out exit_status);
 		} catch (SpawnError e) {
 			print ("Error: %s\n", e.message);
 		}
